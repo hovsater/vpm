@@ -1,0 +1,65 @@
+#!/bin/sh
+bundle_dir="$HOME/.vim/bundle"
+
+repo_exists_locally() {
+  [ -d $bundle_dir/$1 ]
+}
+
+repo_exists_remotely() {
+  git ls-remote $1 &> /dev/null
+}
+
+usage() {
+cat <<-HELP
+Usage:
+  vpm [help]
+  vpm list
+  vpm update
+  vpm install PLUGIN
+  vpm uninstall PLUGIN
+HELP
+}
+
+case $1 in
+  "list")
+    unset CLICOLOR && ls $bundle_dir
+  ;;
+  "install")
+    [ "$2" = "" ] && usage && exit 1
+
+    repo=$2
+    repo_name=$(basename -s ".git" $repo)
+
+    [[ ! $repo =~ .git$ ]] && repo="git://github.com/$2.git"
+
+    if repo_exists_locally $repo_name; then
+      echo "$repo_name is already installed."
+    elif repo_exists_remotely $repo; then
+      cd $bundle_dir && echo "Installing $repo_name." && git clone $repo
+    else
+      echo "Could not find plugin named $repo_name."
+    fi
+  ;;
+  "update")
+    for dir in $(find $bundle_dir -mindepth 1 -maxdepth 1 -type d); do
+      cd $dir && echo "Updating $(basename $dir)." && git pull
+    done
+  ;;
+  "uninstall")
+    [ "$2" = "" ] && usage && exit 1
+
+    repo_name=$2
+
+    if repo_exists_locally $repo_name; then
+      rm -rf $bundle_dir/$repo_name && echo "$repo_name uninstalled."
+    else
+      echo "$repo_name is not installed."
+    fi
+  ;;
+  ""|"help")
+    usage
+  ;;
+  *)
+    echo "Unknown command $1."
+  ;;
+esac
