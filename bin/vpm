@@ -34,10 +34,12 @@ case $1 in
 
     if repo_exists_locally $repo_name; then
       echo "$repo_name is already installed."
+      exit 1
     elif repo_exists_remotely $repo; then
       cd $bundle_dir && echo "Installing $repo_name." && git clone $repo
     else
       echo "Could not find plugin named $repo_name."
+      exit 1
     fi
   ;;
   "update")
@@ -54,6 +56,7 @@ case $1 in
       rm -rf $bundle_dir/$repo_name && echo "$repo_name uninstalled."
     else
       echo "$repo_name is not installed."
+      exit 1
     fi
   ;;
   ""|"help")
@@ -61,5 +64,6 @@ case $1 in
   ;;
   *)
     echo "Unknown command $1."
+    exit 1
   ;;
 esac
