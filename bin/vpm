@@ -1,69 +1,188 @@
 #!/bin/sh
-bundle_dir="$HOME/.vim/bundle"
+version="0.0.1"
+log_dir="$HOME/.vpmlog"
+plugin_dir="$HOME/.vim/bundle"
+plugin_spec="$HOME/.vimplugins"
 
-repo_exists_locally() {
-  [ -d $bundle_dir/$1 ]
+# command helpers
+#
+function empty {
+  [ -z "$1" ]
 }
 
-repo_exists_remotely() {
-  git ls-remote $1 &> /dev/null
+function success {
+  echo "success: $1"
 }
 
-usage() {
+function failure {
+  echo "failure: $1"
+}
+
+function success_and_exit {
+  success "$1"
+  exit 0
+}
+
+function failure_and_exit {
+  failure "$1"
+  exit 1
+}
+
+function plugin_insert {
+  local plugin=$1
+  local plugin_repository="git@github.com:$plugin.git"
+
+  cd $plugin_dir
+  git clone $plugin_repository >> $log_dir 2>&1
+}
+
+function plugin_remove {
+  local plugin_name=$1
+
+  cd $plugin_dir
+  rm -rf $plugin_name
+}
+
+function plugin_update {
+  local plugin_path=$1
+
+  cd $plugin_path
+  git pull origin master >> $log_dir 2>&1
+}
+
+function plugin_inserted {
+  local plugin_name=$1
+
+  [ -d $plugin_dir/$plugin_name ]
+}
+
+# command functions
+#
+function help() {
 cat <<-HELP
 Usage:
-  vpm [help]
-  vpm list
-  vpm update
-  vpm install PLUGIN
-  vpm uninstall PLUGIN
+  vpm [OPTION] [PLUGIN]
+
+Commands:
+
+  Help:
+    vpm
+    vpm -h
+    vpm --help
+
+  List:
+    vpm -l
+    vpm --list
+
+  Insert:
+    vpm          PLUGIN
+    vpm -i       PLUGIN
+    vpm --insert PLUGIN
+
+  Remove:
+    vpm -r       PLUGIN
+    vpm --remove PLUGIN
+
+  Update:
+    vpm -u       [PLUGIN]
+    vpm --update [PLUGIN]
+
+  Version:
+    vpm -v
+    vpm --version
+
+  Bootstrap:
+    vpm -b
+    vpm --bootstrap
 HELP
 }
 
+function list {
+  unset CLICOLOR && ls $plugin_dir
+}
+
+function insert {
+  local plugin=$1
+  local plugin_name=$(basename $plugin)
+
+  if empty $plugin_name; then
+    help
+  fi
+
+  if plugin_inserted $plugin_name; then
+    failure_and_exit "$plugin_name already inserted"
+  fi
+
+  if plugin_insert $plugin; then
+    success_and_exit "$plugin_name inserted"
+  else
+    failure_and_exit "$plugin_name could not be inserted"
+  fi
+}
+
+function remove {
+  local plugin_name=$1
+
+  if empty $plugin_name; then
+    help
+  fi
+
+  if plugin_inserted $plugin_name; then
+    plugin_remove $plugin_name
+    success_and_exit "$plugin_name removed"
+  else
+    failure_and_exit "$plugin_name not inserted"
+  fi
+}
+
+function update {
+  for plugin_path in $(find $plugin_dir -iname "${1-*}" -mindepth 1 -maxdepth 1 -type d); do
+    local plugin_name=$(basename $plugin_path)
+
+    if plugin_update $plugin_path; then
+      success "$plugin_name updated"
+    else
+      failure "$plugin_name could not be updated"
+    fi
+  done
+}
+
+function version {
+  echo $version
+}
+
+function bootstrap {
+  failure_and_exit "Not implemented"
+}
+
+# Main
+#
 case $1 in
-  "list")
-    unset CLICOLOR && ls $bundle_dir
-  ;;
-  "install")
-    [ "$2" = "" ] && usage && exit 1
-
-    repo=$2
-    repo_name=$(basename -s ".git" $repo)
-
-    [[ ! $repo =~ .git$ ]] && repo="git://github.com/$2.git"
-
-    if repo_exists_locally $repo_name; then
-      echo "$repo_name is already installed."
-      exit 1
-    elif repo_exists_remotely $repo; then
-      cd $bundle_dir && echo "Installing $repo_name." && git clone $repo
-    else
-      echo "Could not find plugin named $repo_name."
-      exit 1
-    fi
-  ;;
-  "update")
-    for dir in $(find $bundle_dir -mindepth 1 -maxdepth 1 -type d); do
-      cd $dir && echo "Updating $(basename $dir)." && git pull origin master
-    done
-  ;;
-  "uninstall")
-    [ "$2" = "" ] && usage && exit 1
-
-    repo_name=$2
-
-    if repo_exists_locally $repo_name; then
-      rm -rf $bundle_dir/$repo_name && echo "$repo_name uninstalled."
-    else
-      echo "$repo_name is not installed."
-      exit 1
-    fi
-  ;;
-  ""|"help")
-    usage
-  ;;
+  "-h"|"--help")
+    help
+    ;;
+  "-l"|"--list")
+    list
+    ;;
+  "-i"|"--insert")
+    insert $2
+    ;;
+  "-r"|"--remove")
+    remove $2
+    ;;
+  "-u"|"--update")
+    update $2
+    ;;
+  "-v"|"--version")
+    version
+    ;;
+  "-b"|"--bootstrap")
+    bootstrap
+    ;;
+  "")
+    help
+    ;;
   *)
-    echo "Unknown command $1."
-    exit 1
-  ;;
+    insert $1
+    ;;
 esac
