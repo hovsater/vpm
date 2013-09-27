@@ -189,9 +189,9 @@ function bootstrap {
     fi
 
     if plugin_insert $plugin; then
-      say "success", "$plugin_name inserted"
+      say "success" "$plugin_name inserted"
     else
-      say "failure", "$plugin_name could not be inserted"
+      say "failure" "$plugin_name could not be inserted"
     fi
   done < $plugin_spec
 }
