@@ -91,6 +91,10 @@ Commands:
     vpm -v
     vpm --version
 
+  Snapshot:
+    vpm -s
+    vpm --snapshot
+
   Bootstrap:
     vpm -b
     vpm --bootstrap
@@ -151,6 +155,11 @@ function version {
   echo $version
 }
 
+function snapshot {
+  list > $plugin_spec
+  success_and_exit "snapshot taken from installed plugins"
+}
+
 function bootstrap {
   failure_and_exit "Not implemented"
 }
@@ -175,6 +184,9 @@ case $1 in
     ;;
   "-v"|"--version")
     version
+    ;;
+  "-s"|"--snapshot")
+    snapshot
     ;;
   "-b"|"--bootstrap")
     bootstrap
