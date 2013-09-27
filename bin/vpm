@@ -6,26 +6,22 @@ plugin_spec="$HOME/.vimplugins"
 
 # command helpers
 #
+function say {
+  echo "$1: $2"
+
+  if [ -n "$3" ]; then
+    exit $3
+  fi
+}
+
 function empty {
   [ -z "$1" ]
 }
 
-function success {
-  echo "success: $1"
-}
+function plugins {
+  local plugin_name=${1-*}
 
-function failure {
-  echo "failure: $1"
-}
-
-function success_and_exit {
-  success "$1"
-  exit 0
-}
-
-function failure_and_exit {
-  failure "$1"
-  exit 1
+  find $plugin_dir -iname "$plugin_name" -mindepth 1 -maxdepth 1 -type d
 }
 
 function plugin_insert {
@@ -54,6 +50,23 @@ function plugin_inserted {
   local plugin_name=$1
 
   [ -d $plugin_dir/$plugin_name ]
+}
+
+function plugin_spec_clean {
+  cat /dev/null > $plugin_spec
+}
+
+function plugin_spec_insert {
+  local plugin=$1
+
+  echo $plugin >> $plugin_spec
+}
+
+function plugin_from_remote {
+  local plugin_path=$1
+
+  cd $plugin_path
+  git config --get remote.origin.url | perl -pe 's/(?:git[:\/\/@]*github.com[:\/])(.*)\.git/$1/g'
 }
 
 # command functions
@@ -114,13 +127,13 @@ function insert {
   fi
 
   if plugin_inserted $plugin_name; then
-    failure_and_exit "$plugin_name already inserted"
+    say "failure" "$plugin_name already inserted" 0
   fi
 
   if plugin_insert $plugin; then
-    success_and_exit "$plugin_name inserted"
+    say "success" "$plugin_name inserted" 0
   else
-    failure_and_exit "$plugin_name could not be inserted"
+    say "failure" "$plugin_name could not be inserted" 1
   fi
 }
 
@@ -133,20 +146,20 @@ function remove {
 
   if plugin_inserted $plugin_name; then
     plugin_remove $plugin_name
-    success_and_exit "$plugin_name removed"
+    say "success" "$plugin_name removed" 0
   else
-    failure_and_exit "$plugin_name not inserted"
+    say "failure" "$plugin_name not inserted" 1
   fi
 }
 
 function update {
-  for plugin_path in $(find $plugin_dir -iname "${1-*}" -mindepth 1 -maxdepth 1 -type d); do
+  for plugin_path in $(plugins $1); do
     local plugin_name=$(basename $plugin_path)
 
     if plugin_update $plugin_path; then
-      success "$plugin_name updated"
+      say "success" "$plugin_name updated"
     else
-      failure "$plugin_name could not be updated"
+      say "failure" "$plugin_name could not be updated"
     fi
   done
 }
@@ -156,12 +169,31 @@ function version {
 }
 
 function snapshot {
-  list > $plugin_spec
-  success_and_exit "snapshot taken from installed plugins"
+  plugin_spec_clean
+
+  for plugin_path in $(plugins); do
+    local plugin=$(plugin_from_remote $plugin_path)
+
+    plugin_spec_insert $plugin
+  done
+
+  say "success" "snapshot taken from installed plugins"
 }
 
 function bootstrap {
-  failure_and_exit "Not implemented"
+  while read plugin; do
+    local plugin_name=$(basename $plugin)
+
+    if plugin_inserted $plugin_name; then
+      continue
+    fi
+
+    if plugin_insert $plugin; then
+      say "success", "$plugin_name inserted"
+    else
+      say "failure", "$plugin_name could not be inserted"
+    fi
+  done < $plugin_spec
 }
 
 # Main
