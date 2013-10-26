@@ -8,7 +8,7 @@ vpm works with GitHub repositories. `PLUGIN` is of the form
 
 ```
 Usage:
-  vpm [OPTION] [PLUGIN]
+  vpm [OPTION] [COMMAND] [PLUGIN]
 
 Options:
   -h, --help     - Usage instructions

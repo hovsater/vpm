@@ -3,7 +3,7 @@ set -e
 
 cat <<-HELP
 Usage:
-  vpm [OPTION] [PLUGIN]
+  vpm [OPTION] [COMMAND] [PLUGIN]
 
 Options:
   -h, --help     - Usage instructions
