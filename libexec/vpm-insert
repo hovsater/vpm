@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 set -e
 plugin=$1
-plugin_name=$(basename $plugin)
+plugin_name=$(basename "$plugin")
 plugin_repository="git@github.com:$plugin.git"
 
 cd $(vpm-plugin-directory)
 
-if [ -d "$plugin_name" ]; then
+if [ -z $plugin_name ]; then
+  echo "vpm: missing argument PLUGIN"
+  exit 1
+fi
+
+if [ -d $plugin_name ]; then
   echo "vpm: \`$plugin_name' already inserted"
   exit 1
 fi

@@ -4,7 +4,12 @@ plugin_name=$1
 
 cd $(vpm-plugin-directory)
 
-if [ -d "$plugin_name" ]; then
+if [ -z $plugin_name ]; then
+  echo "vpm: missing argument PLUGIN"
+  exit 1
+fi
+
+if [ -d $plugin_name ]; then
   rm -rf $plugin_name
   echo "vpm: \`$plugin_name' removed"
   exit 0
