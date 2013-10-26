@@ -3,6 +3,11 @@ set -e
 
 cd $(vpm-plugin-directory)
 
+if [ ! -f $(vpm-plugin-file) ]; then
+  echo "vpm: \`$(vpm-plugin-file)' is not present"
+  exit 1
+fi
+
 while read plugin; do
   plugin_name=$(basename $plugin)
   plugin_repository="git@github.com:$plugin.git"
