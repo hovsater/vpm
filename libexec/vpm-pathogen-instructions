@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -e
+
+CAT <<-PATHOGEN_INSTRUCTIONS
+vpm: missing requirement \`pathogen.vim'
+
+mkdir -p ~/.vim/autoload ~/.vim/bundle; \\
+curl -Sso ~/.vim/autoload/pathogen.vim \\
+    https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+
+See https://github.com/tpope/vim-pathogen for more information.
+PATHOGEN_INSTRUCTIONS

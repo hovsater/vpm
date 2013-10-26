@@ -3,6 +3,11 @@ set -e
 command=$1
 export PATH="$VPM_LIBEXECDIR:$PATH"
 
+if [ ! -f "$HOME/.vim/autoload/pathogen.vim" ]; then
+  vpm-pathogen-instructions
+  exit 1
+fi
+
 case "$command" in
   ""|"-h"|"--help")
     vpm-help
