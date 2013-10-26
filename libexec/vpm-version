@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
+VERSION="0.0.1"
+
+echo $VERSION

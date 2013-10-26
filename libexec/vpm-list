@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
+cd $(vpm-plugin-directory)
+
+unset CLICOLOR && ls

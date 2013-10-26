@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -e
+plugin_name=${1-*}
+
+cd $(vpm-plugin-directory)
+
+for plugin_path in $(find . -iname "$plugin_name" -mindepth 1 -maxdepth 1 -type d); do
+  (cd $plugin_path; git pull origin master)
+done

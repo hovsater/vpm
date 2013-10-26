@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -e
+plugin_file="$HOME/.vimplugins"
+
+echo $plugin_file

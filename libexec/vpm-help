@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -e
+
+cat <<-HELP
+Usage:
+  vpm [OPTION] [PLUGIN]
+
+Options:
+  -h, --help     - Usage instructions
+  -v, --version, - Print current version
+
+Commands:
+  List:
+    vpm list
+
+  Insert:
+    vpm        PLUGIN
+    vpm insert PLUGIN
+
+  Remove:
+    vpm remove PLUGIN
+
+  Update:
+    vpm update [PLUGIN]
+
+  Bootstrap:
+    vpm bootstrap
+HELP

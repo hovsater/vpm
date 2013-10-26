@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -e
+
+cd $(vpm-plugin-directory)
+
+while read plugin; do
+  plugin_name=$(basename $plugin)
+  plugin_repository="git@github.com:$plugin.git"
+
+  if [ -d "$plugin_name" ]; then
+    echo "vpm: \`$plugin_name' already inserted"
+    continue
+  fi
+
+  if git clone $plugin_repository; then
+    echo "vpm: \`$plugin_name' inserted"
+  else
+    echo "vpm: \`$plugin_name' could not be inserted"
+  fi
+done < $(vpm-plugin-file)

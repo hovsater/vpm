@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -e
+plugin_directory="$HOME/.vim/bundle"
+
+echo $plugin_directory

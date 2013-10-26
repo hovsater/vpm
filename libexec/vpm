@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -e
+command=$1
+export PATH="$VPM_LIBEXECDIR:$PATH"
+
+case "$command" in
+  ""|"-h"|"--help")
+    vpm-help
+    ;;
+  "-v"|"--version")
+    vpm-version
+    ;;
+  *)
+    if [ $(which "vpm-$command") ]; then
+      shift && exec "vpm-$command" "$@"
+    else
+      vpm-insert "$@"
+    fi
+    ;;
+esac
