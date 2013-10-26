@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -e
+plugin_version="0.0.1"
 
-VERSION="0.0.1"
-
-echo $VERSION
+echo $plugin_version
