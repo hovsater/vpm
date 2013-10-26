@@ -16,7 +16,7 @@ case "$command" in
     vpm-version
     ;;
   *)
-    if [ $(which "vpm-$command") ]; then
+    if [ $(command -v "vpm-$command") ]; then
       shift && exec "vpm-$command" "$@"
     else
       vpm-insert "$@"
