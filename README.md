@@ -31,6 +31,14 @@ Commands:
   Bootstrap:
     vpm bootstrap
 ```
+## Installation
+
+### Homebrew
+vpm can be installed with [Homebrew](http://brew.sh/).
+
+    brew tap KevinSjoberg/formulas
+    brew install vpm
+
 
 ## License
 Copyright (c) 2013 Kevin Sjöberg. vpm may be freely distributed under the MIT
