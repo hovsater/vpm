@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 command=$1
-export PATH="$VPM_LIBEXECDIR:$PATH"
+export PATH="%VPM_LIBEXECDIR%:$PATH"
 
 if [ ! -f "$HOME/.vim/autoload/pathogen.vim" ]; then
   vpm-pathogen-instructions
