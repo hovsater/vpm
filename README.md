@@ -3,28 +3,34 @@ vpm is a lightweight Vim plugin manager that should work out of the box with
 [Pathogen](https://github.com/tpope/vim-pathogen).
 
 ## Usage
+vpm works with GitHub repositories. `PLUGIN` is of the form
+`<username>/<repository>`, e.g., `tpope/vim-fugitive`.
 
-To list your current plugins:
+```
+Usage:
+  vpm [OPTION] [PLUGIN]
 
+Options:
+  -h, --help     - Usage instructions
+  -v, --version, - Print current version
+
+Commands:
+  List:
     vpm list
 
-To update your current plugins:
+  Insert:
+    vpm        PLUGIN
+    vpm insert PLUGIN
 
-    vpm update
+  Remove:
+    vpm remove PLUGIN
 
-To install a given plugin:
+  Update:
+    vpm update [PLUGIN]
 
-    vpm install PLUGIN
-
-where `PLUGIN` is either a valid [Git](http://git-scm.com/) URL or GitHub
-repository such as `tpope/vim-sensible`.
-
-To uninstall a given plugin:
-
-    VPM uninstall PLUGIN
-
-where `PLUGIN` is the name of a currently installed plugin. See `vpm list` for
-installed plugins.
+  Bootstrap:
+    vpm bootstrap
+```
 
 ## License
 Copyright (c) 2013 Kevin Sjöberg. vpm may be freely distributed under the MIT
