@@ -1,7 +1,25 @@
 #!/usr/bin/env bash
 set -e
 command=$1
-export PATH="%VPM_LIBEXECDIR%:$PATH"
+VPM_LIBEXECDIR=${VPM_LIBEXECDIR:-""}
+
+if [ -z $VPM_LIBEXECDIR ]; then
+cat <<-LIBEXEC_NOTICE
+vpm: VPM_LIBEXECDIR is not set!
+
+    You can either export it
+
+      ~ \$ export VPM_LIBEXECDIR=/path/to/vpm/libexec
+      ~ \$ vpm
+
+    or set it during execution.
+
+      ~ \$ VPM_LIBEXECDIR=/path/to/vpm/libexec vpm
+LIBEXEC_NOTICE
+exit 1
+fi
+
+export PATH="$VPM_LIBEXECDIR:$PATH"
 
 if [ ! -f "$HOME/.vim/autoload/pathogen.vim" ]; then
   vpm-pathogen-instructions
