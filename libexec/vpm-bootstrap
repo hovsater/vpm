@@ -3,7 +3,7 @@ set -e
 
 cd $(vpm-plugin-directory)
 
-if [ ! -f $(vpm-plugin-file) ]; then
+if [[ ! -f "$(vpm-plugin-file)" ]]; then
   echo "vpm: \`$(vpm-plugin-file)' is not present"
   exit 1
 fi
@@ -12,7 +12,7 @@ while read plugin; do
   plugin_name=$(basename $plugin)
   plugin_repository="git@github.com:$plugin.git"
 
-  if [ -d "$plugin_name" ]; then
+  if [[ -d "$plugin_name" ]]; then
     echo "vpm: \`$plugin_name' already inserted"
     continue
   fi

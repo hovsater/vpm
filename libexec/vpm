@@ -3,7 +3,7 @@ set -e
 command=$1
 VPM_LIBEXECDIR=${VPM_LIBEXECDIR:-""}
 
-if [ -z $VPM_LIBEXECDIR ]; then
+if [[ -z "$VPM_LIBEXECDIR" ]]; then
 cat <<-LIBEXEC_NOTICE
 vpm: VPM_LIBEXECDIR is not set!
 
@@ -21,7 +21,7 @@ fi
 
 export PATH="$VPM_LIBEXECDIR:$PATH"
 
-if [ ! -f "$HOME/.vim/autoload/pathogen.vim" ]; then
+if [[ ! -f "$HOME/.vim/autoload/pathogen.vim" ]]; then
   vpm-pathogen-instructions
   exit 1
 fi
@@ -34,7 +34,7 @@ case "$command" in
     vpm-version
     ;;
   *)
-    if [ $(command -v "vpm-$command") ]; then
+    if command -v "vpm-$command" > /dev/null; then
       shift && exec "vpm-$command" "$@"
     else
       vpm-insert "$@"
