@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 plugin=$1
-plugin_name=$(basename "$plugin")
+plugin_name=${plugin##*/}
 plugin_repository="git@github.com:$plugin.git"
 
 cd $(vpm-plugin-directory)

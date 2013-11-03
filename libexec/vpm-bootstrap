@@ -9,7 +9,7 @@ if [[ ! -f "$(vpm-plugin-file)" ]]; then
 fi
 
 while read plugin; do
-  plugin_name=$(basename $plugin)
+  plugin_name=${plugin##*/}
   plugin_repository="git@github.com:$plugin.git"
 
   if [[ -d "$plugin_name" ]]; then

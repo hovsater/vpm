@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-CAT <<-PATHOGEN_INSTRUCTIONS
+cat <<-PATHOGEN_INSTRUCTIONS
 vpm: missing requirement \`pathogen.vim'
 
 mkdir -p ~/.vim/autoload ~/.vim/bundle; \\
