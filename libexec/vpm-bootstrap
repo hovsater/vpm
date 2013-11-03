@@ -13,7 +13,7 @@ while read plugin; do
   plugin_repository="git@github.com:$plugin.git"
 
   if [[ -d "$plugin_name" ]]; then
-    echo "vpm: \`$plugin_name' already inserted"
+    echo "vpm: using \`$plugin_name'"
     continue
   fi
 
