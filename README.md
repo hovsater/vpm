@@ -1,10 +1,15 @@
 # vpm
-vpm is a lightweight Vim plugin manager that should work out of the box with
+
+vpm is a lightweight Vim plugin manager intended to work alongside
 [Pathogen](https://github.com/tpope/vim-pathogen).
 
 ## Usage
+
 vpm works with GitHub repositories. `PLUGIN` is of the form
 `<username>/<repository>`, e.g., `tpope/vim-fugitive`.
+
+Plugins can be specified in `~/.vimplugins`. When `vpm bootstrap` is run these
+will be inserted for you.
 
 ```
 Usage:
@@ -31,9 +36,11 @@ Commands:
   Bootstrap:
     vpm bootstrap
 ```
+
 ## Installation
 
 ### Homebrew
+
 vpm can be installed with [Homebrew](http://brew.sh/).
 
     brew tap KevinSjoberg/formulas
@@ -41,5 +48,6 @@ vpm can be installed with [Homebrew](http://brew.sh/).
 
 
 ## License
+
 Copyright (c) 2013 Kevin Sjöberg. vpm may be freely distributed under the MIT
 license. More information can be found in the LICENSE file.
