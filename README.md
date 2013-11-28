@@ -6,9 +6,8 @@ vpm is a lightweight Vim plugin manager intended to work alongside
 ## Usage
 
 vpm works with GitHub repositories. `PLUGIN` is of the form
-`<username>/<repository>`, e.g., `tpope/vim-fugitive`.
-
-Plugins can be specified in `~/.vimplugins`. When `vpm bootstrap` is run these
+`<username>/<repository>`, e.g., `tpope/vim-fugitive`. Plugins can be specified
+in `~/.vimplugins`. When `vpm bootstrap` is run these
 will be inserted for you.
 
 ```
