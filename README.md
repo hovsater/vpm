@@ -45,6 +45,14 @@ vpm can be installed with [Homebrew](http://brew.sh/).
     brew tap KevinSjoberg/formulas
     brew install vpm
 
+## Development
+
+vpm tests are executed using [Bats](https://github.com/sstephenson/bats)
+`brew install bats`
+
+    bats test
+    bats test/<file>.bats
+
 
 ## License
 
