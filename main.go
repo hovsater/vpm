@@ -10,6 +10,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "vpm"
 	app.Usage = "Vim Plugin Manager"
+	app.Version = "0.0.1"
 	app.EnableBashCompletion = true
 	app.Commands = []cli.Command{
 		{
