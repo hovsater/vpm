@@ -18,8 +18,7 @@ func exists(name string) {
 	_, err := os.Stat(name)
 
 	if os.IsNotExist(err) {
-		fmt.Printf("vpm: %s not found\n", name)
-		os.Exit(1)
+		exitWithMessage(1, name, "not found")
 	}
 }
 
@@ -28,4 +27,13 @@ func runCommand(cmd ...string) {
 	command.Stdout = os.Stdout
 	command.Stderr = os.Stderr
 	command.Run()
+}
+
+func exitWithMessage(exitCode int, text ...string) {
+	fmt.Printf("vpm: %s", text[0])
+	for _, t := range text[1:] {
+		fmt.Printf(" %s", t)
+	}
+	fmt.Printf("\n")
+	os.Exit(exitCode)
 }

@@ -1,8 +1,6 @@
 package commands
 
 import (
-	"fmt"
-	"os"
 	"regexp"
 )
 
@@ -17,7 +15,6 @@ func Insert(source string) {
 	if gitURI.MatchString(source) {
 		runCommand("git clone", source)
 	} else {
-		fmt.Printf("%s can not be inserted\n", source)
-		os.Exit(1)
+		exitWithMessage(1, source, "unknown")
 	}
 }

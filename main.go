@@ -15,14 +15,14 @@ func main() {
 	app.Commands = []cli.Command{
 		{
 			Name:  "list",
-			Usage: "List installed plugins",
+			Usage: "List plugins",
 			Action: func(c *cli.Context) {
 				commands.List()
 			},
 		},
 		{
 			Name:  "insert",
-			Usage: "Insert plugin",
+			Usage: "Insert plugins",
 			Action: func(c *cli.Context) {
 				if len(c.Args()) > 0 {
 					commands.Insert(c.Args().First())
@@ -43,7 +43,7 @@ func main() {
 		},
 		{
 			Name:  "remove",
-			Usage: "Remove installed plugin",
+			Usage: "Remove installed plugins",
 			Action: func(c *cli.Context) {
 				if len(c.Args()) > 0 {
 					commands.Remove(c.Args().First())
