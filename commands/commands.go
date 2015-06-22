@@ -10,21 +10,24 @@ import (
 )
 
 func init() {
+	chdir()
+}
+
+func chdir() {
 	user, _ := user.Current()
 	os.Chdir(filepath.Join(user.HomeDir, ".vim", "bundle"))
 }
 
-func exists(name string) {
+func exists(name string) bool {
+	user, _ := user.Current()
+	name = filepath.Join(user.HomeDir, ".vim", "bundle", filepath.Base(name))
 	_, err := os.Stat(name)
-
-	if os.IsNotExist(err) {
-		exitWithMessage(1, name, "not found")
-	}
+	return !os.IsNotExist(err)
 }
 
-func plugins() (plugins []string) {
-	plugins, _ = filepath.Glob("*")
-	return
+func plugins() []string {
+	plugins, _ := filepath.Glob("*")
+	return plugins
 }
 
 func runCommand(cmd ...string) {

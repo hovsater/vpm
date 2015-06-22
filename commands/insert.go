@@ -12,6 +12,10 @@ func Insert(c *cli.Context) {
 		exitWithMessage(1, "no plugin provided")
 	}
 
+	if exists(plugin) {
+		exitWithMessage(1, "already inserted")
+	}
+
 	gitURI := regexp.MustCompile("\\A(?:git|file|https?):\\/\\/|git@|.git\\z")
 	githubShortcut := regexp.MustCompile("\\A[[:alnum:]-]+\\/[[:alnum:]-]+\\z")
 

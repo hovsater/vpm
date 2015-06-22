@@ -11,6 +11,10 @@ func Update(c *cli.Context) {
 	if plugin == "" {
 		updatePlugins(plugins())
 	} else {
+		if !exists(plugin) {
+			exitWithMessage(1, "not found")
+		}
+
 		updatePlugins([]string{plugin})
 	}
 
@@ -18,6 +22,7 @@ func Update(c *cli.Context) {
 
 func updatePlugins(plugins []string) {
 	for _, plugin := range plugins {
+		chdir()
 		os.Chdir(plugin)
 		runCommand("git pull origin master")
 	}

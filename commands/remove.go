@@ -12,7 +12,10 @@ func Remove(c *cli.Context) {
 		exitWithMessage(1, "no plugin provided")
 	}
 
-	exists(plugin)
+	if !exists(plugin) {
+		exitWithMessage(1, "not found")
+	}
+
 	os.RemoveAll(plugin)
 	exitWithMessage(0, plugin, "removed")
 }
