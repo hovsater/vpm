@@ -1,23 +1,24 @@
 package commands
 
 import (
+	"github.com/codegangsta/cli"
 	"os"
-	"path/filepath"
 )
 
-func Update(plugins []string) {
+func Update(c *cli.Context) {
+	plugin := c.Args().First()
+
+	if plugin == "" {
+		updatePlugins(plugins())
+	} else {
+		updatePlugins([]string{plugin})
+	}
+
+}
+
+func updatePlugins(plugins []string) {
 	for _, plugin := range plugins {
 		os.Chdir(plugin)
 		runCommand("git pull origin master")
 	}
-}
-
-func UpdateAll() {
-	plugins, _ := filepath.Glob("*")
-	Update(plugins)
-}
-
-func UpdateSingle(name string) {
-	exists(name)
-	Update([]string{name})
 }

@@ -22,6 +22,11 @@ func exists(name string) {
 	}
 }
 
+func plugins() (plugins []string) {
+	plugins, _ = filepath.Glob("*")
+	return
+}
+
 func runCommand(cmd ...string) {
 	command := exec.Command("sh", "-c", strings.Join(cmd, " "))
 	command.Stdout = os.Stdout

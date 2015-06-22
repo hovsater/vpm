@@ -1,20 +1,27 @@
 package commands
 
 import (
+	"github.com/codegangsta/cli"
 	"regexp"
 )
 
-func Insert(source string) {
+func Insert(c *cli.Context) {
+	plugin := c.Args().First()
+
+	if plugin == "" {
+		exitWithMessage(1, "no plugin provided")
+	}
+
 	gitURI := regexp.MustCompile("\\A(?:git|file|https?):\\/\\/|git@|.git\\z")
 	githubShortcut := regexp.MustCompile("\\A[[:alnum:]-]+\\/[[:alnum:]-]+\\z")
 
-	if githubShortcut.MatchString(source) {
-		source = "https://github.com/" + source
+	if githubShortcut.MatchString(plugin) {
+		plugin = "https://github.com/" + plugin
 	}
 
-	if gitURI.MatchString(source) {
-		runCommand("git clone", source)
+	if gitURI.MatchString(plugin) {
+		runCommand("git clone", plugin)
 	} else {
-		exitWithMessage(1, source, "unknown")
+		exitWithMessage(1, plugin, "unknown")
 	}
 }

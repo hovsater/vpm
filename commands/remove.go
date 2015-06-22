@@ -1,9 +1,18 @@
 package commands
 
-import "os"
+import (
+	"github.com/codegangsta/cli"
+	"os"
+)
 
-func Remove(name string) {
-	exists(name)
-	os.RemoveAll(name)
-	exitWithMessage(0, name, "removed")
+func Remove(c *cli.Context) {
+	plugin := c.Args().First()
+
+	if plugin == "" {
+		exitWithMessage(1, "no plugin provided")
+	}
+
+	exists(plugin)
+	os.RemoveAll(plugin)
+	exitWithMessage(0, plugin, "removed")
 }

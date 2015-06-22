@@ -14,51 +14,28 @@ func main() {
 	app.EnableBashCompletion = true
 	app.Commands = []cli.Command{
 		{
-			Name:  "list",
-			Usage: "List plugins",
-			Action: func(c *cli.Context) {
-				commands.List()
-			},
+			Name:   "list",
+			Usage:  "List plugins",
+			Action: commands.List,
 		},
 		{
-			Name:  "insert",
-			Usage: "Insert plugins",
-			Action: func(c *cli.Context) {
-				if len(c.Args()) > 0 {
-					commands.Insert(c.Args().First())
-				}
-			},
+			Name:   "insert",
+			Usage:  "Insert plugins",
+			Action: commands.Insert,
 		},
 		{
-			Name:  "update",
-			Usage: "Update installed plugins",
-			Action: func(c *cli.Context) {
-				if len(c.Args()) < 1 {
-					commands.UpdateAll()
-				} else {
-					commands.UpdateSingle(c.Args().First())
-				}
-			},
-			BashComplete: pluginComplete,
+			Name:         "update",
+			Usage:        "Update installed plugins",
+			Action:       commands.Update,
+			BashComplete: commands.PluginComplete,
 		},
 		{
-			Name:  "remove",
-			Usage: "Remove installed plugins",
-			Action: func(c *cli.Context) {
-				if len(c.Args()) > 0 {
-					commands.Remove(c.Args().First())
-				}
-			},
-			BashComplete: pluginComplete,
+			Name:         "remove",
+			Usage:        "Remove installed plugins",
+			Action:       commands.Remove,
+			BashComplete: commands.PluginComplete,
 		},
 	}
 
 	app.Run(os.Args)
-}
-
-func pluginComplete(c *cli.Context) {
-	if len(c.Args()) < 1 {
-		commands.List()
-	}
-
 }
