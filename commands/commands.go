@@ -19,9 +19,7 @@ func chdir() {
 }
 
 func exists(name string) bool {
-	user, _ := user.Current()
-	name = filepath.Join(user.HomeDir, ".vim", "bundle", filepath.Base(name))
-	_, err := os.Stat(name)
+	_, err := os.Stat(filepath.Base(name))
 	return !os.IsNotExist(err)
 }
 
